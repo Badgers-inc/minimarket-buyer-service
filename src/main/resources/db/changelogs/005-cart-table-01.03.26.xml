@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="5" author="cart">
+        <createTable tableName="cart" schemaName="buyer_application">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true"
+                             primaryKey="true"/>
+            </column>
+            <column name="buyer_id" type="UUID">
+                <constraints nullable="false" unique="true"
+                foreignKeyName="cart_buyer_id"
+                referencedTableName="buyer"
+                referencedColumnNames="id"/>
+            </column>
+            <column name="created_at" type="timestamptz">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
