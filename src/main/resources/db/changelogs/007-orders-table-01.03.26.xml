@@ -6,11 +6,12 @@
 
     <changeSet id="7" author="rasan">
         <createTable tableName="orders" schemaName="buyer_application">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true" remarks="идентификатор, генерируется">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="completed" type="boolean">
+            <column name="completed" type="boolean" remarks="завершен ли заказ; true после завершения покупки"
+                    defaultValue="false">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>

@@ -6,11 +6,11 @@
 
     <changeSet id="8" author="rasan">
         <createTable tableName="seller" schemaName="buyer_application">
-            <column name="id" type="UUID">
+            <column name="id" type="UUID" remarks="идентификатор">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(50)">
+            <column name="name" type="varchar(50)" remarks="название">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>

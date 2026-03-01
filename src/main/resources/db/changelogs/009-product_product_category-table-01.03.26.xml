@@ -6,19 +6,23 @@
 
     <changeSet id="9" author="rasan">
         <createTable tableName="product_product_category" schemaName="buyer_application">
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="UUID" remarks="ссылка на товар">
                 <constraints nullable="false" unique="false"
-                             foreignKeyName="product_product_category_product_fk"
+                             foreignKeyName="fk_product_product_category_product"
                              referencedTableName="product"
                              referencedColumnNames="id"/>
             </column>
-            <column name="category_id" type="bigint">
+            <column name="category_id" type="bigint" remarks="ссылка на категорию">
                 <constraints nullable="false" unique="false"
-                             foreignKeyName="product_product_category_product_category_fk"
+                             foreignKeyName="fk_product_product_category_product_category"
                              referencedTableName="product_category"
                              referencedColumnNames="id"/>
             </column>
         </createTable>
+        <addUniqueConstraint tableName="product_product_category"
+                             schemaName="buyer_application"
+                             columnNames="product_id, category_id"
+                             constraintName="uq_product_category"/>
     </changeSet>
 
 </databaseChangeLog>

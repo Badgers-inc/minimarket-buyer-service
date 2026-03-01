@@ -6,41 +6,43 @@
 
     <changeSet id="6" author="rasan">
         <createTable tableName="cart_offer" schemaName="buyer_application">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true"
+                    remarks="идентификатор, генерируется">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="cart_id" type="bigint">
+            <column name="cart_id" type="bigint" remarks="идентификатор корзины">
                 <constraints nullable="false" unique="true"
-                             foreignKeyName="cart_offer_cart_fk"
+                             foreignKeyName="fk_cart_offer_cart"
                              referencedTableName="cart"
                              referencedColumnNames="id"/>
             </column>
-            <column name="offer_id" type="UUID">
+            <column name="offer_id" type="UUID" remarks="ссылка на товар">
                 <constraints nullable="false" unique="false"
-                             foreignKeyName="cart_offer_offer_fk"
+                             foreignKeyName="fk_cart_offer_offer"
                              referencedTableName="offer"
                              referencedColumnNames="id"/>
             </column>
-            <column name="quantity" type="int">
+            <column name="quantity" type="int" remarks="количество товара в магазине">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="order_id" type="bigint">
+            <column name="order_id" type="bigint" remarks="ссылка на заказ">
                 <constraints nullable="false" unique="false"
-                             foreignKeyName="cart_offer_order_fk"
+                             foreignKeyName="fk_cart_offer_order"
                              referencedTableName="orders"
                              referencedColumnNames="id"/>
             </column>
-            <column name="price_at_purchase" type="decimal(10,2)">
+            <column name="price_at_purchase" type="decimal(10,2)" remarks="стоимость на момент заказа">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="created_at" type="timestamptz">
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="updated_at" type="timestamptz">
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
                 <constraints nullable="true" unique="false"/>
             </column>
-            <column name="active" type="boolean">
+            <column name="active" type="boolean" remarks="активна ли запись; false после завершения покупки"
+                    defaultValue="true">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>

@@ -6,35 +6,36 @@
 
     <changeSet id="4" author="rasan">
         <createTable tableName="offer" schemaName="buyer_application">
-            <column name="id" type="UUID">
+            <column name="id" type="UUID" remarks="идентификатор">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="UUID" remarks="ссылка на товар">
                 <constraints nullable="false" unique="false"
-                foreignKeyName="offer_product_fk"
-                referencedTableName="product"
-                referencedColumnNames="id"/>
+                             foreignKeyName="fk_offer_product"
+                             referencedTableName="product"
+                             referencedColumnNames="id"/>
             </column>
-            <column name="seller_id" type="UUID">
+            <column name="seller_id" type="UUID" remarks="ссылка на продавца товаров">
                 <constraints nullable="false" unique="false"
-                foreignKeyName="offer_seller_fk"
-                referencedTableName="seller"
-                referencedColumnNames="id"/>
+                             foreignKeyName="fk_offer_seller"
+                             referencedTableName="seller"
+                             referencedColumnNames="id"/>
             </column>
-            <column name="price" type="numeric(10,2)">
+            <column name="price" type="numeric(10,2)" remarks="цена за единицу">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="units_in_stock" type="integer">
+            <column name="units_in_stock" type="integer" remarks="количество товара на складе">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="created_at" type="timestamptz">
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="updated_at" type="timestamptz">
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
                 <constraints nullable="true" unique="false"/>
             </column>
-            <column name="active" type="boolean">
+            <column name="active" type="boolean" remarks="активна ли запись"
+                    defaultValue="true">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>

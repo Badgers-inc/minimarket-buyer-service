@@ -5,18 +5,20 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="2" author="rasan">
-        <createTable tableName="product_category" schemaName="buyer_application">
+        <createTable tableName="product_category" schemaName="buyer_application"
+                     remarks="идентификатор, генерируется">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="description" type="varchar(70)">
+            <column name="description" type="varchar(70)" remarks="описание категории">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="category_code" type="varchar(20)">
+            <column name="category_code" type="varchar(20)" remarks="код категории">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="active" type="boolean">
+            <column name="active" type="boolean" remarks="активна ли запись"
+                    defaultValue="true">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>

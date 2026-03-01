@@ -6,23 +6,24 @@
 
     <changeSet id="5" author="rasan">
         <createTable tableName="cart" schemaName="buyer_application">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true" remarks="идентификатор, генерируется">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>
-            <column name="buyer_id" type="UUID">
+            <column name="buyer_id" type="UUID" remarks="ссылка на владельца корзины">
                 <constraints nullable="false" unique="true"
-                foreignKeyName="cart_buyer_id"
-                referencedTableName="buyer"
-                referencedColumnNames="id"/>
+                             foreignKeyName="fr_cart_buyer"
+                             referencedTableName="buyer"
+                             referencedColumnNames="id"/>
             </column>
-            <column name="created_at" type="timestamptz">
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="updated_at" type="timestamptz">
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
                 <constraints nullable="true" unique="false"/>
             </column>
-            <column name="active" type="boolean">
+            <column name="active" type="boolean" remarks="активна ли запись"
+                    defaultValue="true">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>
