@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="4" author="rasan">
+        <createTable tableName="offer" schemaName="buyer_application">
+            <column name="id" type="UUID">
+                <constraints nullable="false" unique="true"
+                             primaryKey="true"/>
+            </column>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false" unique="false"
+                foreignKeyName="offer_product_fk"
+                referencedTableName="product"
+                referencedColumnNames="id"/>
+            </column>
+            <column name="seller_id" type="UUID">
+                <constraints nullable="false" unique="false"
+                foreignKeyName="offer_seller_fk"
+                referencedTableName="seller"
+                referencedColumnNames="id"/>
+            </column>
+            <column name="price" type="numeric(10,2)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="units_in_stock" type="integer">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="created_at" type="timestamptz">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
