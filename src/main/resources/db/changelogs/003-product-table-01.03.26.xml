@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="3" author="rasan">
+        <createTable tableName="product" schemaName="buyer_application">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()"
+                    remarks="идентификатор, генерируется">
+                <constraints nullable="false" unique="true"
+                             primaryKey="true"/>
+            </column>
+            <column name="product_name" type="varchar(70)" remarks="название товара">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="description" type="varchar(3000)" remarks="описание товара">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="article_number" type="varchar(30)" remarks="артикул">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="active" type="boolean" remarks="активна ли запись"
+                    defaultValue="true">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

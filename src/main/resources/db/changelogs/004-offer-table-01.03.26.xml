@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="4" author="rasan">
+        <createTable tableName="offer" schemaName="buyer_application">
+            <column name="id" type="UUID" remarks="идентификатор">
+                <constraints nullable="false" unique="true"
+                             primaryKey="true"/>
+            </column>
+            <column name="product_id" type="UUID" remarks="ссылка на товар">
+                <constraints nullable="false" unique="false"
+                             foreignKeyName="fk_offer_product"
+                             referencedTableName="product"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="seller_id" type="UUID" remarks="ссылка на продавца товаров">
+                <constraints nullable="false" unique="false"
+                             foreignKeyName="fk_offer_seller"
+                             referencedTableName="seller"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="price" type="numeric(10,2)" remarks="цена за единицу">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="units_in_stock" type="integer" remarks="количество товара на складе">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="active" type="boolean" remarks="активна ли запись"
+                    defaultValue="true">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

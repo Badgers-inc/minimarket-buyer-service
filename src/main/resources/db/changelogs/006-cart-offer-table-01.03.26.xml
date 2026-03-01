@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="6" author="rasan">
+        <createTable tableName="cart_offer" schemaName="buyer_application">
+            <column name="id" type="bigint" autoIncrement="true"
+                    remarks="идентификатор, генерируется">
+                <constraints nullable="false" unique="true"
+                             primaryKey="true"/>
+            </column>
+            <column name="cart_id" type="bigint" remarks="идентификатор корзины">
+                <constraints nullable="false" unique="true"
+                             foreignKeyName="fk_cart_offer_cart"
+                             referencedTableName="cart"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="offer_id" type="UUID" remarks="ссылка на товар">
+                <constraints nullable="false" unique="false"
+                             foreignKeyName="fk_cart_offer_offer"
+                             referencedTableName="offer"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="quantity" type="int" remarks="количество товара в магазине">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="order_id" type="bigint" remarks="ссылка на заказ">
+                <constraints nullable="false" unique="false"
+                             foreignKeyName="fk_cart_offer_order"
+                             referencedTableName="orders"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="price_at_purchase" type="decimal(10,2)" remarks="стоимость на момент заказа">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" remarks="дата и время создания записи">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" remarks="дата и время обновления записи">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="active" type="boolean" remarks="активна ли запись; false после завершения покупки"
+                    defaultValue="true">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
