@@ -6,7 +6,7 @@
 
     <changeSet id="7" author="rasan">
         <createTable tableName="orders" schemaName="buyer_application">
-            <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
             </column>

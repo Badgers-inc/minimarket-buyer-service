@@ -28,7 +28,7 @@
             <column name="order_id" type="bigint">
                 <constraints nullable="false" unique="false"
                              foreignKeyName="cart_offer_order_fk"
-                             referencedTableName="order"
+                             referencedTableName="orders"
                              referencedColumnNames="id"/>
             </column>
             <column name="price_at_purchase" type="decimal(10,2)">
