@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="6" author="rasan">
-        <createTable tableName="cart" schemaName="buyer_application">
+        <createTable tableName="cart_offer" schemaName="buyer_application">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true"
                              primaryKey="true"/>
