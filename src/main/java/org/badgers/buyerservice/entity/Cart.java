@@ -22,7 +22,7 @@ public class Cart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "buyer_id")
+    @JoinColumn(name = "buyer_id", nullable = false, unique = true)
     private Buyer buyer;
 
     @Column(name = "created_at", nullable = false, updatable = false)

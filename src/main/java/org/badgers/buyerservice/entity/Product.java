@@ -30,7 +30,7 @@ public class Product {
     @Column(name = "description", length = 3000, nullable = false)
     private String description;
 
-    @Column(name = "article_number", length = 30, nullable = false)
+    @Column(name = "article_number", length = 30, nullable = false, unique = true)
     private String articleNumber;
 
     @Column(name = "created_at", nullable = false, updatable = false)
