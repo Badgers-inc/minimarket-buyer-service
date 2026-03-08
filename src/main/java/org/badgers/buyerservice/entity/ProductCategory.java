@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product_category")
@@ -29,8 +30,19 @@ public class ProductCategory {
     @ColumnDefault(value = "true")
     private Boolean active = true;
 
-    @ManyToMany(mappedBy = "productCategory")
+    @ManyToMany(mappedBy = "productCategory", cascade =  CascadeType.PERSIST)
     private List<Product> products;
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
 
+        ProductCategory that = (ProductCategory) object;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

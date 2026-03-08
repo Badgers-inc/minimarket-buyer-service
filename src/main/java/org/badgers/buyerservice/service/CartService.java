@@ -1,5 +1,6 @@
 package org.badgers.buyerservice.service;
 
+import org.badgers.buyerservice.entity.Buyer;
 import org.badgers.buyerservice.entity.Cart;
 
 import java.util.List;
@@ -7,14 +8,14 @@ import java.util.UUID;
 
 public interface CartService {
 
-    Cart save(Cart cart);
+    Cart create(Buyer buyer);
 
-    void delete(Cart cart);
+    void delete(Long id);
 
     Cart findById(Long id);
 
     List<Cart> findAll();
 
-    List<Cart> findByBuyerId(UUID buyerId);
+    Cart findByBuyerId(UUID buyerId);
 
 }

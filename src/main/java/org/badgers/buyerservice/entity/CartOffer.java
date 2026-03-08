@@ -50,7 +50,7 @@ public class CartOffer {
 
     @Column(name = "active", nullable = false)
     @ColumnDefault(value = "true")
-    private Boolean active;
+    private Boolean active = true;
 
 
 }
