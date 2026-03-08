@@ -20,6 +20,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrdersRepository ordersRepository;
 
     @Override
+    @Transactional
     public Orders createOrder(Orders orders) {
         log.debug("creating order");
         if (orders == null) {
@@ -31,6 +32,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Orders getOrderById(Long orderId) {
         log.debug("getting order by id {}", orderId);
         Orders order = ordersRepository.findById(orderId)
@@ -62,6 +64,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Orders> getAllOrders() {
         log.debug("getting all orders");
         List<Orders> orders = ordersRepository.findAll();

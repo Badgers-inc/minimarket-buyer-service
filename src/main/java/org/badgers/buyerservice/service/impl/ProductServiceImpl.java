@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.badgers.buyerservice.entity.Product;
 import org.badgers.buyerservice.entity.ProductCategory;
+import org.badgers.buyerservice.repository.ProductCategoryRepository;
 import org.badgers.buyerservice.repository.ProductRepository;
 import org.badgers.buyerservice.service.ProductService;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
     @Override
     @Transactional
@@ -64,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
         log.debug("start getting all products");
         List<Product> allProducts = productRepository.findAll();
@@ -72,17 +75,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Product getProductById(UUID productId) {
         log.debug("start getting product with id: {}, ", productId);
         if (productId == null) {
             throw new IllegalArgumentException("id is null");
         }
-        Product found = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+        Product found = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
         log.debug("get product with id: {}, ", found.getProductName());
         return found;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> getAllProductsByCategory(ProductCategory productCategory) {
         log.debug("start getting all products by category: {}, ", productCategory);
         if (productCategory == null) {
@@ -97,6 +103,42 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
+    public Product addProductCategoriesToProduct(UUID productId, List<Long> categoriesIds) {
+        log.debug("start adding products to categories: {}, ", categoriesIds);
+        if (productId == null) {
+            throw new IllegalArgumentException("productId is null");
+        }
+        if (categoriesIds == null || categoriesIds.isEmpty()) {
+            throw new IllegalArgumentException("categoriesIds is null or empty");
+        }
+        Product found = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product with id: " + productId + " does not exist"));
+        List<ProductCategory> categories = productCategoryRepository.findAllById(categoriesIds);
+        if (categories.size() != categoriesIds.size()) {
+            List<Long> foundIds = categories.stream().map(ProductCategory::getId).toList();
+            List<Long> notFoundIds = categoriesIds.stream()
+                    .filter(id -> !foundIds.contains(id))
+                    .toList();
+            throw new EntityNotFoundException("Categories with id " + notFoundIds + " does not exist");
+        }
+        for (ProductCategory category : categories) {
+            if (category.getActive() != true) {
+                throw new IllegalArgumentException("category active is not true");
+            }
+        }
+        List<ProductCategory> existingProductCategories = found.getProductCategory();
+        for (ProductCategory category : categories) {
+            if (!existingProductCategories.contains(category)) {
+                existingProductCategories.add(category);
+            }
+        }
+        log.debug("end adding products to categories: {}, ", categoriesIds);
+        return found;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Product getProductByArticleNumber(String articleNumber) {
         log.debug("start getting product by article number: {}, ", articleNumber);
         if (articleNumber == null) {
@@ -143,11 +185,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Product trimmedProduct(Product product) {
-        Product trimmedProduct = new Product();
-        trimmedProduct.setProductName(trimString(product.getProductName()));
-        trimmedProduct.setDescription(trimString(product.getDescription()));
-        trimmedProduct.setArticleNumber(trimString(product.getArticleNumber()));
-        return trimmedProduct;
+        product.setProductName(trimString(product.getProductName()));
+        product.setDescription(trimString(product.getDescription()));
+        product.setArticleNumber(trimString(product.getArticleNumber()));
+        return product;
     }
 
     private String trimString(String string) {

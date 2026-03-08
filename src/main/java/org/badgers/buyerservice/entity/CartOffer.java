@@ -48,9 +48,8 @@ public class CartOffer {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active;
+    @Column(name = "active")
+    private boolean active = true;
 
 
 }

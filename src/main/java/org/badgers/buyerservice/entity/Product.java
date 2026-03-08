@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -41,13 +42,25 @@ public class Product {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active = true;
+    @Column(name = "active")
+    private boolean active = true;
 
     @ManyToMany
     @JoinTable(name = "product_product_category",
             joinColumns = {@JoinColumn(name = "product_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
     private List<ProductCategory> productCategory;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+
+        Product product = (Product) object;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

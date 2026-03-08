@@ -47,6 +47,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Seller getSellerById(UUID id) {
         log.debug("starting getSellerById");
         Seller seller = sellerRepository.findById(id)
@@ -71,6 +72,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Seller> getAllSellers() {
         log.debug("starting getAllSellers");
         List<Seller> sellers = sellerRepository.findAll();
@@ -79,6 +81,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Seller getSellerByName(String name) {
         log.debug("starting getSellerByName");
         if (name == null || name.isEmpty()) {

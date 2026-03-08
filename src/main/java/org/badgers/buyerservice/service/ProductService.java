@@ -22,4 +22,6 @@ public interface ProductService {
 
     Product getProductByArticleNumber(String articleNumber);
 
+    Product addProductCategoriesToProduct(UUID productId, List<Long> categories);
+
 }

@@ -44,9 +44,8 @@ public class Buyer {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active = true;
+    @Column(name = "active")
+    private boolean active = true;
 
 
 }

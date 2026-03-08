@@ -19,7 +19,6 @@ public class Orders {
     private Long id;
 
     @Column(name = "completed")
-    @ColumnDefault(value = "false")
-    private Boolean completed = false;
+    private boolean completed;
 
 }

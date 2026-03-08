@@ -1,5 +1,6 @@
 package org.badgers.buyerservice.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.badgers.buyerservice.entity.Buyer;
@@ -24,7 +25,7 @@ public class BuyerServiceImpl implements BuyerService {
     public Buyer save(Buyer buyer) {
         log.debug("start save buyer : {}", buyer);
         if (buyer == null) {
-            throw new NullPointerException("buyer cannot be null");
+            throw new IllegalArgumentException("buyer cannot be null");
         }
         if (buyer.getFirstName() == null || buyer.getLastName() == null) {
             throw new IllegalArgumentException("not valid buyer fields");
@@ -55,7 +56,7 @@ public class BuyerServiceImpl implements BuyerService {
             throw new IllegalArgumentException("id cannot be null");
         }
         Buyer buyer = buyerRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("buyer with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("buyer with id " + id + " not found"));
         log.debug("end find buyer by id : {}", buyer);
         return buyer;
     }
@@ -84,7 +85,7 @@ public class BuyerServiceImpl implements BuyerService {
         existsBuyer.setLastName(trimString(buyer.getLastName()));
         existsBuyer.setBirthDate(buyer.getBirthDate());
         existsBuyer.setMiddleName(trimString(buyer.getMiddleName()));
-        existsBuyer.setActive(buyer.getActive());
+        existsBuyer.setActive(buyer.isActive());
         Buyer updatedBuyer = buyerRepository.save(existsBuyer);
         log.debug("end update buyer by id : {}", uuid);
         return updatedBuyer;
