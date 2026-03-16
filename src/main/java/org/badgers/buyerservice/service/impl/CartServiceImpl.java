@@ -26,7 +26,7 @@ public class CartServiceImpl implements CartService {
     public Cart create(Buyer buyer) {
         log.debug("creating cart for buyer id {}", buyer.getId());
         validateBuyer(buyer);
-        if (cartRepository.existsCartByBuyer_Id(buyer.getId())) {
+        if (cartRepository.existsByBuyerId(buyer.getId())) {
             throw new IllegalArgumentException("buyer already has cart");
         }
         Cart cart = new Cart();
@@ -36,6 +36,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         log.debug("deleting cart for buyer id {}", id);
         if (id == null) {

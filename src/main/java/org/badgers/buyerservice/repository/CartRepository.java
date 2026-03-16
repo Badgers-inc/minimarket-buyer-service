@@ -7,9 +7,7 @@ import java.util.UUID;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    boolean getCartByBuyerId(UUID buyerId);
-
     Cart findByBuyerId(UUID buyerId);
 
-    boolean existsCartByBuyer_Id(UUID buyerId);
+    boolean existsByBuyerId(UUID buyerId);
 }

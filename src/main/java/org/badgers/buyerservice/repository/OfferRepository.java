@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OfferRepository extends JpaRepository<Offer, UUID> {
-    List<Offer> findOffersBySeller_Id(UUID sellerId);
+    List<Offer> findOffersBySellerId(UUID sellerId);
 
-    List<Offer> findOffersByProduct_Id(UUID productId);
+    List<Offer> findOffersByProductId(UUID productId);
 }

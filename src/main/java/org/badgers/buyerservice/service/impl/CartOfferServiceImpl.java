@@ -57,6 +57,7 @@ public class CartOfferServiceImpl implements CartOfferService {
     }
 
     @Override
+    @Transactional
     public void deleteCartOffer(Long cartOfferId) {
         log.debug("start deleting CartOffer");
         if (cartOfferId == null) {

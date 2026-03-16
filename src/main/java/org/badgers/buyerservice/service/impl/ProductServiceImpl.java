@@ -145,10 +145,8 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("article number is null");
         }
         String trimmedArticleNumber = trimString(articleNumber);
-        Product product = productRepository.findProductByArticleNumber(trimmedArticleNumber);
-        if (product == null) {
-            throw new EntityNotFoundException("product with article number: " + trimmedArticleNumber + " does not exist");
-        }
+        Product product = productRepository.findProductByArticleNumber(trimmedArticleNumber)
+                .orElseThrow(EntityNotFoundException::new);
         log.debug("end getting product by article number: {}, ", trimmedArticleNumber);
         return product;
     }

@@ -22,6 +22,7 @@ public class BuyerServiceImpl implements BuyerService {
     private final BuyerRepository buyerRepository;
 
     @Override
+    @Transactional
     public Buyer save(Buyer buyer) {
         log.debug("start save buyer : {}", buyer);
         if (buyer == null) {
@@ -36,6 +37,7 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         log.debug("start delete buyer : {}", id);
         if (id == null) {
@@ -50,6 +52,7 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Buyer findById(UUID id) {
         log.debug("start find buyer by id : {}", id);
         if (id == null) {
@@ -62,6 +65,7 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Buyer> findAll() {
         log.debug("start find all buyers");
         List<Buyer> buyers = buyerRepository.findAll();

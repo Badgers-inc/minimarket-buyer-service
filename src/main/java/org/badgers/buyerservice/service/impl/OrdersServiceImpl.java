@@ -42,6 +42,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    @Transactional
     public void deleteOrderById(Long orderId) {
         log.debug("deleting order by id {}", orderId);
         try {

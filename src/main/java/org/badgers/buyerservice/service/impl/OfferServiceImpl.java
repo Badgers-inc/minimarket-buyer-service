@@ -57,6 +57,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @Transactional
     public void deleteOfferById(UUID id) {
         log.debug("start deleting offer by id {}", id);
         if (id == null) {
@@ -77,7 +78,7 @@ public class OfferServiceImpl implements OfferService {
         if (sellerId == null) {
             throw new IllegalArgumentException("sellerId can't be null");
         }
-        List<Offer> offers = offerRepository.findOffersBySeller_Id(sellerId);
+        List<Offer> offers = offerRepository.findOffersBySellerId(sellerId);
         if (offers.isEmpty()) {
             log.debug("Offer's list is empty");
         }
@@ -92,7 +93,7 @@ public class OfferServiceImpl implements OfferService {
         if (productId == null) {
             throw new IllegalArgumentException("productId can't be null");
         }
-        List<Offer> offers = offerRepository.findOffersByProduct_Id(productId);
+        List<Offer> offers = offerRepository.findOffersByProductId(productId);
         if (offers.isEmpty()) {
             log.debug("Offer's list is empty");
         }

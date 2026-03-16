@@ -93,6 +93,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteProductCategory(Long id) {
         log.debug("Start deleting product category with id {}", id);
         if (id == null) {

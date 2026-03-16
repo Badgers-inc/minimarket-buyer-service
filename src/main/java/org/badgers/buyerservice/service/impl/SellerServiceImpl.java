@@ -37,6 +37,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    @Transactional
     public void deleteSeller(UUID id) {
         log.debug("starting delete Seller");
         if (!sellerRepository.existsById(id)) {
@@ -87,10 +88,8 @@ public class SellerServiceImpl implements SellerService {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Seller name is null");
         }
-        Seller seller = sellerRepository.findSellerByName(trimmedString(name));
-        if (seller == null) {
-            throw new EntityNotFoundException("Seller with name " + name + " not found");
-        }
+        Seller seller = sellerRepository.findSellerByName(trimmedString(name))
+                .orElseThrow(() -> new EntityNotFoundException("Seller with name " + name + " not found"));
         log.debug("getSellerByName {}", seller);
         return seller;
     }

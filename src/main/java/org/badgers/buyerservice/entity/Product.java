@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -53,14 +52,17 @@ public class Product {
 
     @Override
     public boolean equals(Object object) {
+        if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
 
         Product product = (Product) object;
+        if (id == null || product.id == null)
+            return Objects.equals(articleNumber, product.articleNumber);
         return Objects.equals(id, product.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, articleNumber);
     }
 }
