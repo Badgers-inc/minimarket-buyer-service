@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -46,8 +45,7 @@ public class Offer {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active = true;
+    @Column(name = "active")
+    private boolean active = true;
 
 }

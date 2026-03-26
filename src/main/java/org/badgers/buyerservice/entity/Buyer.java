@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -45,9 +43,8 @@ public class Buyer {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active = true;
+    @Column(name = "active")
+    private boolean active = true;
 
 
 }

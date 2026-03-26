@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,7 +21,7 @@ public class Cart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "buyer_id")
+    @JoinColumn(name = "buyer_id", nullable = false, unique = true)
     private Buyer buyer;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -33,8 +32,7 @@ public class Cart {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
-    private Boolean active = true;
+    @Column(name = "active")
+    private boolean active = true;
 
 }

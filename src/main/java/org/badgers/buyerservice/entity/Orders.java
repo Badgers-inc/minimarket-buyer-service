@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "orders")
@@ -19,7 +18,6 @@ public class Orders {
     private Long id;
 
     @Column(name = "completed")
-    @ColumnDefault(value = "false")
-    private Boolean completed = false;
+    private boolean completed;
 
 }

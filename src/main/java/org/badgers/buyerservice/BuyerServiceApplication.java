@@ -8,6 +8,6 @@ public class BuyerServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BuyerServiceApplication.class, args);
-    }
 
+    }
 }
