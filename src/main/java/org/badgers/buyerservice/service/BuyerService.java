@@ -1,20 +1,28 @@
 package org.badgers.buyerservice.service;
 
-import org.badgers.buyerservice.entity.Buyer;
+import org.badgers.buyerservice.dto.BuyerRequestDto;
+import org.badgers.buyerservice.dto.BuyerResponseDto;
+import org.badgers.buyerservice.dto.filter.BuyerFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface BuyerService {
 
-    Buyer save(Buyer buyer);
+    BuyerResponseDto save(BuyerRequestDto buyer);
 
-    void delete(UUID uuid);
+    void softDelete(UUID uuid);
 
-    Buyer findById(UUID id);
+    BuyerResponseDto findById(UUID id);
 
-    List<Buyer> findAll();
+    List<BuyerResponseDto> findAllByFilter(BuyerFilter filter);
 
-    Buyer updateById(UUID uuid, Buyer buyer);
+    Page<BuyerResponseDto> findAllByFilter(BuyerFilter filter, Pageable pageable);
+
+    List<BuyerResponseDto> findAll();
+
+    BuyerResponseDto updateById(UUID uuid, BuyerRequestDto buyer);
 
 }

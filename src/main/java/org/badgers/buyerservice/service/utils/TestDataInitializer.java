@@ -2,7 +2,10 @@ package org.badgers.buyerservice.service.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.badgers.buyerservice.dto.BuyerRequestDto;
+import org.badgers.buyerservice.dto.BuyerResponseDto;
 import org.badgers.buyerservice.entity.*;
+import org.badgers.buyerservice.mapper.BuyerMapper;
 import org.badgers.buyerservice.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -19,6 +22,7 @@ import java.util.List;
 @Profile("test")
 public class TestDataInitializer implements CommandLineRunner {
 
+    private final BuyerMapper buyerMapper;
     private final BuyerService buyerService;
     private final CartService cartService;
     private final CartOfferService cartOfferService;
@@ -158,15 +162,13 @@ public class TestDataInitializer implements CommandLineRunner {
                 {"Дмитрий", "Смирнов", "Андреевич", LocalDate.of(1992, 1, 25)}};
 
         for (Object[] buyerData : buyers) {
-            Buyer buyer = new Buyer();
-            buyer.setFirstName((String) buyerData[0]);
-            buyer.setLastName((String) buyerData[1]);
-            buyer.setMiddleName((String) buyerData[2]);
-            buyer.setBirthDate((LocalDate) buyerData[3]);
-            buyer.setActive(true);
-
-            Buyer saved = buyerService.save(buyer);
-            log.debug("Created buyer: id={}, name='{} {}'", saved.getId(), saved.getFirstName(), saved.getLastName());
+            BuyerRequestDto buyer = new BuyerRequestDto(
+                    (String) buyerData[0],
+                    (String) buyerData[1],
+                    (String) buyerData[2],
+                    (LocalDate) buyerData[3]);
+            BuyerResponseDto saved = buyerService.save(buyer);
+            log.debug("Created buyer: id={}, name='{} {}'", saved.uuid(), saved.firstName(), saved.lastName());
         }
     }
 
@@ -218,19 +220,19 @@ public class TestDataInitializer implements CommandLineRunner {
     private void createCarts() {
         log.debug("Creating carts...");
 
-        List<Buyer> buyers = buyerService.findAll();
+        List<BuyerResponseDto> buyers = buyerService.findAll();
 
-        for (Buyer buyer : buyers) {
-            Cart cart = cartService.create(buyer);
+        for (BuyerResponseDto buyer : buyers) {
+            Cart cart = cartService.create(buyerMapper.buyerResponseDtoToBuyer(buyer));
             log.debug("Created cart: id={} for buyer: {} {}",
-                    cart.getId(), buyer.getFirstName(), buyer.getLastName());
+                    cart.getId(), buyer.firstName(), buyer.lastName());
         }
     }
 
     private void createCartOffers() {
         log.debug("Adding offers to carts...");
 
-        List<Buyer> buyers = buyerService.findAll();
+        List<BuyerResponseDto> buyers = buyerService.findAll();
         List<Offer> offers = offerService.getAllOffers();
 
         if (buyers.isEmpty() || offers.isEmpty()) {
@@ -239,7 +241,7 @@ public class TestDataInitializer implements CommandLineRunner {
         }
 
         if (buyers.size() > 0) {
-            Cart cart1 = cartService.findByBuyerId(buyers.get(0).getId());
+            Cart cart1 = cartService.findByBuyerId(buyers.get(0).uuid());
             Offer milkOffer = findCheapestOfferForProduct(offers, "ART-001");
 
             if (milkOffer != null) {
@@ -248,7 +250,7 @@ public class TestDataInitializer implements CommandLineRunner {
         }
 
         if (buyers.size() > 1) {
-            Cart cart2 = cartService.findByBuyerId(buyers.get(1).getId());
+            Cart cart2 = cartService.findByBuyerId(buyers.get(1).uuid());
             Offer phoneOffer = findFirstOfferForProduct(offers, "ART-002");
 
             if (phoneOffer != null) {
@@ -257,7 +259,7 @@ public class TestDataInitializer implements CommandLineRunner {
         }
 
         if (buyers.size() > 2) {
-            Cart cart3 = cartService.findByBuyerId(buyers.get(2).getId());
+            Cart cart3 = cartService.findByBuyerId(buyers.get(2).uuid());
             Offer wineOffer = findFirstOfferForProduct(offers, "ART-003");
 
             if (wineOffer != null) {
@@ -266,7 +268,7 @@ public class TestDataInitializer implements CommandLineRunner {
         }
 
         if (buyers.size() > 3) {
-            Cart cart4 = cartService.findByBuyerId(buyers.get(3).getId());
+            Cart cart4 = cartService.findByBuyerId(buyers.get(3).uuid());
             Offer bookOffer = findFirstOfferForProduct(offers, "ART-005");
 
             if (bookOffer != null) {
