@@ -1,0 +1,658 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Buyer Service API",
+    "description": "API для управления покупателями в маркетплейсе",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8081/api/v1",
+      "description": "Локальный сервер"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "BuyerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Иванов"
+          },
+          "middleName": {
+            "type": "string",
+            "example": "Петрович"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-01-01"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T10:00:00Z"
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BuyerRequest": {
+        "type": "object",
+        "required": ["firstName", "lastName"],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Петр"
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Петров"
+          },
+          "middleName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Иванович"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "example": "1985-05-15"
+          }
+        }
+      },
+      "BuyerUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Петр"
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Петров"
+          },
+          "middleName": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Сергеевич"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "example": "1985-05-15"
+          }
+        }
+      },
+      "BuyerFilter": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Иванов"
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          },
+          "birthDateFrom": {
+            "type": "string",
+            "format": "date",
+            "example": "1980-01-01"
+          },
+          "birthDateTo": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-12-31"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "default": 0,
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "default": 20,
+            "example": 10
+          },
+          "sort": {
+            "type": "string",
+            "default": "id,asc",
+            "example": "lastName,desc"
+          }
+        }
+      },
+      "PageResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BuyerResponse"
+            }
+          },
+          "pageable": {
+            "type": "object",
+            "properties": {
+              "pageNumber": {
+                "type": "integer",
+                "example": 0
+              },
+              "pageSize": {
+                "type": "integer",
+                "example": 20
+              },
+              "sort": {
+                "type": "object",
+                "properties": {
+                  "sorted": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "unsorted": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "empty": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              },
+              "offset": {
+                "type": "integer",
+                "example": 0
+              },
+              "paged": {
+                "type": "boolean",
+                "example": true
+              },
+              "unpaged": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 1
+          },
+          "totalElements": {
+            "type": "integer",
+            "example": 2
+          },
+          "last": {
+            "type": "boolean",
+            "example": true
+          },
+          "size": {
+            "type": "integer",
+            "example": 20
+          },
+          "number": {
+            "type": "integer",
+            "example": 0
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "sorted": {
+                "type": "boolean",
+                "example": true
+              },
+              "unsorted": {
+                "type": "boolean",
+                "example": false
+              },
+              "empty": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "example": 2
+          },
+          "first": {
+            "type": "boolean",
+            "example": true
+          },
+          "empty": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T10:00:00Z"
+          },
+          "status": {
+            "type": "integer",
+            "example": 404
+          },
+          "error": {
+            "type": "string",
+            "example": "Not Found"
+          },
+          "message": {
+            "type": "string",
+            "example": "Buyer not found with id: 123e4567-e89b-12d3-a456-426614174000"
+          },
+          "path": {
+            "type": "string",
+            "example": "/api/v1/buyers/123"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "X-Auth-User-ID": {
+        "name": "X-Auth-User-ID",
+        "in": "header",
+        "description": "UUID текущего авторизованного пользователя",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      },
+      "BuyerId": {
+        "name": "id",
+        "in": "path",
+        "description": "UUID покупателя",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      },
+      "PageParam": {
+        "name": "page",
+        "in": "query",
+        "description": "Номер страницы (начиная с 0)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "example": 1
+        }
+      },
+      "SizeParam": {
+        "name": "size",
+        "in": "query",
+        "description": "Размер страницы",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100,
+          "example": 10
+        }
+      },
+      "SortParam": {
+        "name": "sort",
+        "in": "query",
+        "description": "Поле и направление сортировки (формат: поле,направление)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "default": "id,asc",
+          "example": "lastName,desc"
+        }
+      },
+      "FirstNameFilter": {
+        "name": "firstName",
+        "in": "query",
+        "description": "Фильтр по имени (частичное совпадение)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "Иван"
+        }
+      },
+      "LastNameFilter": {
+        "name": "lastName",
+        "in": "query",
+        "description": "Фильтр по фамилии (частичное совпадение)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "Иванов"
+        }
+      },
+      "ActiveFilter": {
+        "name": "active",
+        "in": "query",
+        "description": "Фильтр по активности",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "BirthDateFromFilter": {
+        "name": "birthDateFrom",
+        "in": "query",
+        "description": "Начало диапазона дат рождения",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date",
+          "example": "1980-01-01"
+        }
+      },
+      "BirthDateToFilter": {
+        "name": "birthDateTo",
+        "in": "query",
+        "description": "Конец диапазона дат рождения",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date",
+          "example": "1990-12-31"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/buyers/{id}": {
+      "get": {
+        "tags": ["Buyers"],
+        "summary": "Получить покупателя по ID",
+        "description": "Возвращает информацию о конкретном покупателе. Доступно только для администрации.",
+        "operationId": "getBuyerById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/BuyerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешное получение данных",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Покупатель не найден",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Buyers"],
+        "summary": "Частичное обновление покупателя",
+        "description": "Частично обновляет информацию о покупателе. Доступно только для администрации.",
+        "operationId": "partialUpdateBuyer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/BuyerId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Петр"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Петров"
+                  },
+                  "middleName": {
+                    "type": "string",
+                    "example": "Александрович"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "1985-05-15"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Покупатель успешно обновлен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Покупатель не найден",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Buyers"],
+        "summary": "Деактивация покупателя",
+        "description": "Мягкое удаление покупателя (устанавливает active=false). Доступно только для администрации.",
+        "operationId": "deactivateBuyer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/BuyerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Покупатель успешно деактивирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Покупатель не найден",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/buyers/self": {
+      "get": {
+        "tags": ["Buyers"],
+        "summary": "Получить информацию о себе",
+        "description": "Возвращает информацию о текущем авторизованном покупателе.",
+        "operationId": "getCurrentBuyer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/X-Auth-User-ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешное получение данных",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Заголовок X-Auth-User-ID отсутствует",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Покупатель не найден",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/buyers": {
+      "get": {
+        "tags": ["Buyers"],
+        "summary": "Поиск покупателей",
+        "description": "Поиск покупателей по фильтрам с пагинацией. Доступно только для администрации.",
+        "operationId": "searchBuyers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/FirstNameFilter"
+          },
+          {
+            "$ref": "#/components/parameters/LastNameFilter"
+          },
+          {
+            "$ref": "#/components/parameters/ActiveFilter"
+          },
+          {
+            "$ref": "#/components/parameters/BirthDateFromFilter"
+          },
+          {
+            "$ref": "#/components/parameters/BirthDateToFilter"
+          },
+          {
+            "$ref": "#/components/parameters/PageParam"
+          },
+          {
+            "$ref": "#/components/parameters/SizeParam"
+          },
+          {
+            "$ref": "#/components/parameters/SortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный поиск",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Buyers"],
+        "summary": "Создать покупателя",
+        "description": "Создает нового покупателя. Доступно только для администрации.",
+        "operationId": "createBuyer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Покупатель успешно создан",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
